@@ -29,6 +29,7 @@ model Organization {
   createdBy Int
   updatedBy Int
   userOrganization UserOrganization[]
+  project   Project[]
 }
 
 model UserOrganization {
@@ -39,4 +40,11 @@ model UserOrganization {
   role            String
 
   @@id([userId, organizationId])
+}
+
+model Project {
+  projectId       Int           @id @default(autoincrement())
+  name            String
+  organization    Organization  @relation(fields:[organizationId], references: [id])
+  organizationId  Int
 }

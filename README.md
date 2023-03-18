@@ -14,6 +14,9 @@
   - [prisma, docker](#prisma-docker)
     - [prisma](#prisma)
     - [docker](#docker)
+    - [prismaの設定](#prismaの設定)
+      - [env file を指定する](#env-file-を指定する)
+      - [seed 指定する](#seed-指定する)
 
 
 ## check
@@ -224,3 +227,47 @@ docker-compose.yml 生成
 ```
 
 - [[Qiita]初心者向けdocker-composeコマンド逆引き](https://qiita.com/okyk/items/a374ddb3f853d1688820)
+
+
+### prismaの設定
+
+#### env file を指定する
+https://www.prisma.io/docs/guides/development-environment/environment-variables/using-multiple-env-files
+
+- `dotenv-cli` のインストール
+
+```shell
+% pnpm add dotenv-cli -D
+```
+
+- `package.json` でスクリプトをカスタムする
+```json
+{
+  "scripts": {
+    "prisma:migrate": "dotenv -e .env.example -- pnpm prisma migrate dev --name 'init'",
+    "prisma:push": "dotenv -e .env.example -- pnpm prisma db push",
+    ...
+  }
+}
+```
+
+#### seed 指定する
+
+- env指定
+- package.json に設定
+
+```json
+{
+  "prisma": {
+    "seed": "dotenv -e .env.example -- ts-node prisma/seed.ts"
+  }
+}
+```
+
+- コマンドで実行
+
+```shell
+% pnpm prisma db seed
+
+```
+
