@@ -20,7 +20,7 @@ jobs:
       - name: Backend Testing
         run: |
           cd server
-          pnpm ci
+          pnpm install
           pnpm run test
 
       - name: Upload coverage reports to Codecov
