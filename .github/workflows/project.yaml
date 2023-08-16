@@ -1,0 +1,31 @@
+name: Add PR to Project
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  add-to-project:
+    name: Add PR to Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Add PR to Project to In Progress
+        if: github.event.pull_request.draft == true
+        uses: actions/add-to-project@5
+        with:
+          project-url: https://github.com/users/87ram/projects/1
+          column-name: In Progress
+          issue-number: ${{ github.event.pull_request.number }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add PR to Project to In Review
+        if: github.event.pull_request.draft == false && github.event.pull_request.merged == false
+        uses: actions/add-to-project@5
+        with:
+          project-url: https://github.com/users/87ram/projects/1
+          column-name: In Review
+          issue-number: ${{ github.event.pull_request.number }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
